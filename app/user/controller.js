@@ -65,6 +65,32 @@ exports.signup = async (req, res) => {
   }
 };
 
+exports.getProfiledetails = async (req, res) => {
+try {
+  const userdetails = await database.user.findAll({
+    attributes: ['user_id', 'full_name', 'email', 'profile_image']
+  });
+
+  if (!userdetails) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  return res.status(200).json({
+    code: 200,
+    data: userdetails
+  });
+
+} catch (error) {
+  console.error("Error fetching user profile:", error);
+  return res.status(500).json({
+    message: "Internal Server Error",
+    error: error.message
+  });
+}
+
+};
+
+
 
 
 
