@@ -4,6 +4,4 @@ const upload = require("../middleware/upload_files");
 
 module.exports = app=>{
     app.post("/signup",upload.any("profileImage"),User.signup);
-    app.post("/login",User.login);
-    app.get("/getusers",User.getusers);
 }
