@@ -127,6 +127,7 @@ exports.login = async (req, res) => {
   }
 };
 
+
 exports.getusers = async (req, res) => {
   try {
     const { role_id, user_id } = req.query;
@@ -138,28 +139,23 @@ exports.getusers = async (req, res) => {
       });
     }
 
+    // Convert to numbers (important for comparisons)
+    const roleIdNum = Number(role_id);
+    const userIdNum = Number(user_id);
+
     let users;
 
-    if (role_id === "1") {
+    if (roleIdNum === 1) {
       // Admin: show all users except self
       users = await User.findAll({
         attributes: ["user_id", "full_name", "email", "profile_image", "role_id", "createdAt"],
         where: {
           isDeleted: false,
-          user_id: { [Op.ne]: user_id },
+          user_id: { [Op.ne]: userIdNum },
         },
         order: [["createdAt", "DESC"]],
       });
-    } else {
-      // Normal user: only self
-      users = await User.findAll({
-        attributes: ["user_id", "full_name", "email", "profile_image", "role_id", "createdAt"],
-        where: {
-          isDeleted: false,
-          user_id,
-        },
-      });
-    }
+    } 
 
     res.status(200).json({
       code: 200,
@@ -175,4 +171,6 @@ exports.getusers = async (req, res) => {
     });
   }
 };
+
+
 
