@@ -6,11 +6,21 @@ const Database = require('./app/index');
 
 // Express app
 const app = express();
-app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json()); // For JSON
+app.use(bodyParser.urlencoded({ extended: true }));
+// Add this after your bodyParser middleware
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.path}`);
+  console.log('Body:', req.body);
+  console.log('Content-Type:', req.get('Content-Type'));
+  next();
+});
 
 app.use(cors({
-  origin: "*",
+  origin: ['http://localhost:8080','http://192.168.29.94:8080'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 }));
 
 app.use("/uploads", express.static("uploads"));
@@ -35,6 +45,7 @@ app.get("/", (req, res) => {
 });
 
 require("./app/user/route")(app);
+require("./app/admin/route")(app);
 
 // Start Server
 const PORT = process.env.PORT || 5000;

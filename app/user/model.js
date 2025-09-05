@@ -13,21 +13,33 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING,
             allowNull: false,
         },
-        isDeleted :{
-            type :Sequelize.BOOLEAN,
-            defaultValue:false
+        token: {
+            type: Sequelize.TEXT,
+            allowNull: true,
         },
-        status:{
-            type : Sequelize.ENUM("ACTIVE","INACTIVE"),
-            defaultValue:"ACTIVE"
+        role_id: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+            references: {
+                model: 'Role', // must match your roles table name
+                key: 'role_id',
+            },
+        },
+        isDeleted: {
+            type: Sequelize.BOOLEAN,
+            defaultValue: false
+        },
+        status: {
+            type: Sequelize.ENUM("ACTIVE", "INACTIVE"),
+            defaultValue: "ACTIVE"
         },
         password: {
             type: Sequelize.STRING,
             allowNull: false,
         },
-        profile_image:{
-            type:Sequelize.STRING,
-            allowNull:true
+        profile_image: {
+            type: Sequelize.STRING,
+            allowNull: true
         }
     }, {
         freezeTableName: true

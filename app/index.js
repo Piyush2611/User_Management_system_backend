@@ -18,6 +18,9 @@ database.sequelize = sequelize;
 database.Sequelize = Sequelize;
 
 database.user = require("./user/model")(sequelize,Sequelize);
-
+database.role = require("./RBAC/role_model")(sequelize,Sequelize);
+database.section = require("./RBAC/section_model")(sequelize,Sequelize);
+database.permission = require("./RBAC/permission_model")(sequelize,Sequelize);
+database.assignpermission = require("./RBAC/assignpermission_model")(sequelize,Sequelize);
 
 module.exports = database;
