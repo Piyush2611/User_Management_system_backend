@@ -33,6 +33,10 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.ENUM("ACTIVE", "INACTIVE"),
             defaultValue: "ACTIVE"
         },
+        phone:{
+            type: Sequelize.STRING,
+            allowNull: false,
+        },
         password: {
             type: Sequelize.STRING,
             allowNull: false,

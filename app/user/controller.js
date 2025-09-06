@@ -12,7 +12,7 @@ exports.signup = async (req, res) => {
   const transaction = await database.sequelize.transaction(); // start transaction
 
   try {
-    const { fullName, email, password, confirmPassword } = req.body;
+    const { fullName, email, password, confirmPassword,phone } = req.body;
 
     if (!fullName || !email || !password || !confirmPassword) {
       return res.status(400).json({ message: "All fields are required." });
@@ -39,6 +39,7 @@ exports.signup = async (req, res) => {
       {
         full_name: fullName,
         email,
+        phone,
         password: hashedPassword,
         profile_image:image,
         role_id: 2,
@@ -75,7 +76,7 @@ exports.getProfiledetails = async (req, res) => {
 
     const userdetails = await database.user.findOne({
       where: { user_id },
-      attributes: ['user_id', 'full_name', 'email', 'profile_image']
+      attributes: ['user_id', 'full_name', 'email', 'profile_image','phone']
     });
 
     if (!userdetails) {
@@ -95,6 +96,44 @@ exports.getProfiledetails = async (req, res) => {
     });
   }
 };
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const { user_id, full_name, email, phone } = req.body;
+
+    // Extract uploaded image
+    const image = req.files && req.files.length > 0 ? req.files[0].filename : null;
+
+    // Validate input
+    if (!user_id || !full_name || !email || !phone) {
+      return res.status(400).json({ message: "All fields are required." });
+    }
+
+    // Find user by ID
+    const user = await User.findById(user_id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Update fields
+    user.full_name = full_name;
+    user.email = email;
+    user.phone = phone;
+
+    if (image) {
+      user.profile_image = image;
+    }
+
+    await user.save();
+
+    res.status(200).json({ message: "Profile updated successfully.", user });
+  } catch (error) {
+    console.error("Update Profile Error:", error);
+    res.status(500).json({ message: "Server error while updating profile." });
+  }
+};
+
+
 
 
 
