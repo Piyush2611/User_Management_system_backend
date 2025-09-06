@@ -17,7 +17,7 @@ app.use((req, res, next) => {
 });
 
 app.use(cors({
-  origin: ['https://user-management-system-frontend-sepia.vercel.app/'],
+  origin: ['https://user-management-system-frontend-sepia.vercel.app'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
