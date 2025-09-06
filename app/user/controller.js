@@ -1,6 +1,6 @@
 // controllers/authController.js
 require("dotenv").config();
-const { Op } = require("sequelize");
+const { Op, where } = require("sequelize");
 const bcrypt = require("bcryptjs");
 const jwt = require('jsonwebtoken');
 // const User = require("../models/User");
@@ -110,7 +110,9 @@ exports.updateProfile = async (req, res) => {
     }
 
     // Find user by ID
-    const user = await User.findById(user_id);
+    const user = await User.findOne({
+      where:{user_id}
+    });
     if (!user) {
       return res.status(404).json({ message: "User not found." });
     }
