@@ -55,7 +55,7 @@ exports.signup = async (req, res) => {
         id: user.id,
         fullName: user.full_name, // match column name
         email: user.email,
-        profileImage: user.profileImage,
+        profile_image: user.profileImage,
       },
     });
   } catch (error) {
